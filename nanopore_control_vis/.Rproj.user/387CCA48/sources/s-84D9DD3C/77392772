@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1511087073649.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "77392772",
+    "lastKnownWriteTime" : 1511087067,
+    "last_content_update" : 1511087103501,
+    "path" : "~/projekty/MBI_project/nanopore_control_vis/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "34,16",
+        "scrollLine" : "17"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
