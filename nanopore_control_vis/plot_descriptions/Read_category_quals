@@ -1,1 +1,1 @@
-The function plotReadCategoryQuals() allows to calculate the mean quality score for each sequence. It allows to examine the base quality scores for the reads in the three categories.
+Generates a box plot showing the mean base quality for each read, broken down into the three categories of read type that can be found in a fast5 file.

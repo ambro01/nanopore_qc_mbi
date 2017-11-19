@@ -12,7 +12,8 @@ ioniserReadCategoryCounts = "Read category counts"
 ioniserReadCategoryQuals = "Read category quals"
 ioniserEventRate = "Event rate"
 ioniserBaseProductionRate = "Base production rate"
-ioniserBaseProductionRate = "Base production rate"
+ioniserReadTypeProduction = "Read type production"
+ioniserCurrentByTime = "Current by time"
 ioniserReadsLayout = "Reads layout"
 ioniserBasesLayout = "Bases layout"
 
@@ -23,12 +24,14 @@ ioniserSelectList <- c("",
                        ioniserReadCategoryQuals,
                        ioniserEventRate,
                        ioniserBaseProductionRate,
+                       ioniserReadTypeProduction,
+                       ioniserCurrentByTime,
                        ioniserReadsLayout,
                        ioniserBasesLayout)
 
 #fast5files <- list.files(path = "/path/to/data/", pattern = ".fast5$", full.names = TRUE)
 #data <- readFast5Summary( fast5files )
-data = s.typhi.rep1
+summaryData = s.typhi.rep1
 
 ui <- fluidPage(
     ui <- navbarPage(
@@ -57,18 +60,19 @@ server <- function(input, output) {
   
   x <- reactive(input$ioniserSelect)
   y <- reactive({
-    if(x() == ioniserReadAccumulation) plotReadAccumulation(data)
-    else if(x() == ioniserActiveChannels) plotActiveChannels(data)
-    else if(x() == ioniserReadCategoryCounts) plotReadCategoryCounts(data)
-    else if(x() == ioniserReadCategoryQuals) plotReadCategoryQuals(data)
-    else if(x() == ioniserEventRate) plotEventRate(data)
-    else if(x() == ioniserBaseProductionRate) plotBaseProductionRate(data)
-    else if(x() == ioniserReadsLayout) layoutPlot(data, attribute = "nreads")
-    else if(x() == ioniserBasesLayout) layoutPlot(data, attribute = "kb")
+    if(x() == ioniserReadAccumulation) plotReadAccumulation(summaryData)
+    else if(x() == ioniserActiveChannels) plotActiveChannels(summaryData)
+    else if(x() == ioniserReadCategoryCounts) plotReadCategoryCounts(summaryData)
+    else if(x() == ioniserReadCategoryQuals) plotReadCategoryQuals(summaryData)
+    else if(x() == ioniserEventRate) plotEventRate(summaryData)
+    else if(x() == ioniserBaseProductionRate) plotBaseProductionRate(summaryData)
+    else if(x() == ioniserReadTypeProduction) plotReadTypeProduction(summaryData)
+    else if(x() == ioniserCurrentByTime) plotCurrentByTime(summaryData)
+    else if(x() == ioniserReadsLayout) layoutPlot(summaryData, attribute = "nreads")
+    else if(x() == ioniserBasesLayout) layoutPlot(summaryData, attribute = "kb")
   })
   desc <- reactive({
     fileName <- gsub(" ", "", paste("plot_descriptions/", gsub(" ", "_", x()), step=""))
-    #fileName <- "plot_descriptions/Read_accumulation"
     readChar(fileName, file.info(fileName)$size)
   })
   

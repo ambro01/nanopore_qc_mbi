@@ -1,1 +1,1 @@
-Plot shows the how many channels were active (i.e. the number of molecules being read) during each minute of the experiment.
+Plot the number of active channels for each minute of run time.
