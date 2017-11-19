@@ -1,0 +1,1 @@
+The function plotReadCategories() will visualise the total number of fast5 files summarised in an Fast5Summary object, along with the counts of those containing template, complement and 2D calls. For an ideal dataset all four bars will be the same height, and the difference between them can reflect the quality of a dataset.

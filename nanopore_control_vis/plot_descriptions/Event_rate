@@ -1,0 +1,1 @@
+The function plotEventRate() lvisualises the performance of the pores over time. For example, it shows how rapidly events occur, which should be analagous to the rate at which molecules move through the nanopores.
