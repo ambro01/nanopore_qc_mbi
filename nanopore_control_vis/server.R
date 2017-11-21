@@ -1,63 +1,67 @@
-server <- function(input, output) {
+library(IONiseR)
+library(minionSummaryData)
+library(ggplot2)
+library(gridExtra)
+library(poRe)
+
+source('global.R')
+source('ui.R')
+source('server_ioniser.R')
+source('server_pore.R')
+
+server <- function(input, output, session) {
   
-  dataSource <- reactive({input$ioniserRadio})
+  dataSource <- reactive(input$ioniserRadio)
+  dataPath <- reactive(input$ioniserFile$datapath)
   
-  summaryData <- reactive({
-    if(dataSource() == 1) readFast5Summary(input$ioniserFile$datapath)
-    else if(dataSource() == 2){
-      data(s.typhi.rep1) 
-      return(s.typhi.rep1)
-    } else if(dataSource() == 3){
-      data(s.typhi.rep2) 
-      return(s.typhi.rep2)
-    } else if(dataSource() == 4){
-      data(s.typhi.rep3) 
-      return(s.typhi.rep3)
-    }
-  })
+  summaryData <- reactive(
+    if (isValid(dataSource())){
+      getSummaryData(dataSource(), dataPath())
+    })
   
-  x <- reactive(input$ioniserSelect)
-  y <- reactive({
-    if(x() == ioniserReadAccumulation) plotReadAccumulation(summaryData())
-    else if(x() == ioniserActiveChannels) plotActiveChannels(summaryData())
-    else if(x() == ioniserReadCategoryCounts) plotReadCategoryCounts(summaryData())
-    else if(x() == ioniserReadCategoryQuals) plotReadCategoryQuals(summaryData())
-    else if(x() == ioniserEventRate) plotEventRate(summaryData())
-    else if(x() == ioniserBaseProductionRate) plotBaseProductionRate(summaryData())
-    else if(x() == ioniserReadTypeProduction) plotReadTypeProduction(summaryData())
-    else if(x() == ioniserCurrentByTime) plotCurrentByTime(summaryData())
-    else if(x() == ioniserReadsLayout) layoutPlot(summaryData(), attribute = "nreads")
-    else if(x() == ioniserBasesLayout) layoutPlot(summaryData(), attribute = "kb")
-  })
-  desc <- reactive({
-    if (x() != ioniserNone){
-      fileName <- gsub(" ", "", paste("plot_descriptions/", gsub(" ", "_", x()), step=""))
-      readChar(fileName, file.info(fileName)$size)
-    }
-  })
+  selectedMethod <- reactive(input$ioniserSelect)
+  yIoniser <- reactive(
+    if (isValid(summaryData()) && isValid(selectedMethod())){
+      generatePlotByFunctionName(selectedMethod(), summaryData())
+    })
+  
+  descIoniser <- reactive(generateDescription(selectedMethod()))
   
   observeEvent(input$ioniserButton,{
-    drawing <- y()
-    description <- desc()
+    drawing <- yIoniser()
+    description <- descIoniser()
     output$plotIoniser <- renderPlot(drawing)
     output$plotDescription <- renderText(description)
   })
   
-  observeEvent(
-    ignoreNULL = TRUE,
-    eventExpr = {
+  dirPath <- reactive(readDirectoryInput(session, 'poreDir'))
+  observeEvent(ignoreNULL = TRUE, eventExpr = {
       input$poreDir
     },
     handlerExpr = {
       if (input$poreDir > 0) {
-        # condition prevents handler execution on initial app launch
-        
-        # launch the directory selection dialog with initial path read from the widget
-        path = choose.dir(default = readDirectoryInput(session, 'directory'))
-        
-        # update the widget value
-        updateDirectoryInput(session, 'directory', value = path)
+        path = choose.dir(default = readDirectoryInput(session, 'poreDir'))
+        updateDirectoryInput(session, 'poreDir', value = path)
       }
     }
   )
+  
+  
+  
+  observeEvent(input$poreButton,{
+    
+    poreSummaryData <- reactive(
+      if (isValid(dirPath())){
+        getPoreData(dirPath())
+      })
+    
+    poreSelectedMethod <- reactive(input$poreSelect)
+    yPore <- reactive(
+      if (isValid(poreSummaryData()) && isValid(poreSelectedMethod())){
+        generatePorePlotByFunctionName(poreSelectedMethod(), poreSummaryData())
+      })
+    
+    drawingPore <- yPore()
+    output$plotPore <- renderPrint(plot.length.histogram(poreSummaryData()))
+  })
 }

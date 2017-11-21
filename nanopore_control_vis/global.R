@@ -28,3 +28,12 @@ ioniserRadioList <- c("Files from disc" = 1,
                       "Data set 1" = 2,
                       "Data set 2" = 3,
                       "Data set 3" = 4)
+
+poreNone = "---"
+poreHistogram = "Histogram"
+poreSelectList <- c(poreNone,
+                    poreHistogram)
+
+isValid <- function(x){
+  return (!is.null(x) && length(x) > 0)
+}

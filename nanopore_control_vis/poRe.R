@@ -7,9 +7,9 @@ fileName = "/home/ra/nanopore_data/nanook_ecoli_500/N79596_dh10b_8kb_11022015/fa
 
 fast5files <- list.files(path = dataCatalog, pattern = "\\.fast5$", full.names = TRUE, recursive = TRUE)
 
-#meta <- read.fast5.info(dataCatalog)
+meta <- read.fast5.info(dataCatalog)
 #meta = data(s.typhi.rep1)
-meta <- get_fast5_info(fileName)
+#meta <- get_fast5_info(fileName)
 
 stats <- run.summary.stats(meta)
 plot.length.histogram(meta)
@@ -18,7 +18,7 @@ yield <- plot.cumulative.yield(meta)
 # find the maximum length
 max(pass$len2d)
 
-# get the metadata for that read
+# get the metadata for that readz
 pass[pass$len2d==max(pass$len2d),]
 
 plot.channel.reads(meta)

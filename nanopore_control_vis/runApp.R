@@ -1,1 +1,1 @@
-runApp(appDir = "/")
+runApp("nanopore_control_vis")
