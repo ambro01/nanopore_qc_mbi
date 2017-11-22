@@ -3,6 +3,7 @@ library(minionSummaryData)
 library(ggplot2)
 library(gridExtra)
 library(poRe)
+library(ggplot2)
 
 source('global.R')
 source('ui.R')
@@ -11,57 +12,56 @@ source('server_pore.R')
 
 server <- function(input, output, session) {
   
-  dataSource <- reactive(input$ioniserRadio)
-  dataPath <- reactive(input$ioniserFile$datapath)
+  # wszystko co laczy sie z odczytywanie stanu kontrolek na widoku musi wyc zawarte w blokach
+  # oberwatora (jak ponizej) lub w blokach reactive()
   
-  summaryData <- reactive(
-    if (isValid(dataSource())){
-      getSummaryData(dataSource(), dataPath())
-    })
-  
-  selectedMethod <- reactive(input$ioniserSelect)
-  yIoniser <- reactive(
-    if (isValid(summaryData()) && isValid(selectedMethod())){
-      generatePlotByFunctionName(selectedMethod(), summaryData())
-    })
-  
-  descIoniser <- reactive(generateDescription(selectedMethod()))
-  
-  observeEvent(input$ioniserButton,{
-    drawing <- yIoniser()
-    description <- descIoniser()
-    output$plotIoniser <- renderPlot(drawing)
-    output$plotDescription <- renderText(description)
-  })
-  
-  dirPath <- reactive(readDirectoryInput(session, 'poreDir'))
-  observeEvent(ignoreNULL = TRUE, eventExpr = {
-      input$poreDir
-    },
-    handlerExpr = {
-      if (input$poreDir > 0) {
-        path = choose.dir(default = readDirectoryInput(session, 'poreDir'))
-        updateDirectoryInput(session, 'poreDir', value = path)
+  ############ ioniser ###########
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate'
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserButton, handlerExpr = {
+    # zaczytywanie wartosci zmiennych wejsciowych
+    dataSource <- input$ioniserRadio
+    dataPath <- input$ioniserFile$datapath
+    
+    #dane wejciowe moga zostac zaczytane z plikow lub z biblioteki 
+    summaryData <- (
+      if (isValid(dataSource)){
+        getSummaryData(dataSource, dataPath) 
+      })
+    # to wybranej metody generuje sie wykres i opis
+    selectedMethod <- input$ioniserSelect
+    yIoniser <- if (isValid(summaryData) && isValid(selectedMethod)){
+        generatePlotByFunctionName(selectedMethod, summaryData)
       }
-    }
-  )
-  
-  
-  
-  observeEvent(input$poreButton,{
+    descIoniser <- generateDescription(selectedMethod)
     
-    poreSummaryData <- reactive(
-      if (isValid(dirPath())){
-        getPoreData(dirPath())
-      })
-    
-    poreSelectedMethod <- reactive(input$poreSelect)
-    yPore <- reactive(
-      if (isValid(poreSummaryData()) && isValid(poreSelectedMethod())){
-        generatePorePlotByFunctionName(poreSelectedMethod(), poreSummaryData())
-      })
-    
-    drawingPore <- yPore()
-    output$plotPore <- renderPrint(plot.length.histogram(poreSummaryData()))
+    # ustawienie wartosci wyjsc
+    output$plotIoniser <- renderPlot(yIoniser)
+    output$plotDescription <- renderText(descIoniser)
   })
+  
+  ############ pore ###########
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreDir, handlerExpr = {
+    # odpowiada wylacznie za uaktualnianie sciezki katalogu
+    if (input$poreDir > 0) {
+      path = choose.dir(default = readDirectoryInput(session, 'poreDir'))
+      updateDirectoryInput(session, 'poreDir', value = path)
+    }
+  })
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
+    
+    dirPath <- readDirectoryInput(session, 'poreDir')
+    poreSummaryData <- if (isValid(dirPath)){
+        getPoreData(dirPath)
+      }
+    
+    poreSelectedMethod <- input$poreSelect
+    yPore <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
+        generatePorePlotByFunctionName(poreSelectedMethod, poreSummaryData)
+      }
+    
+    output$plotPore <- renderPlot(replayPlot(yPore))
+  })
+  
 }

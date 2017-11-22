@@ -1,5 +1,7 @@
 source('directoryInput.R')
 
+# deklaracja nazw metod i funkcji globalnych
+
 ioniserNone = "---"
 ioniserReadAccumulation = "Read accumulation"
 ioniserActiveChannels = "Active channels"

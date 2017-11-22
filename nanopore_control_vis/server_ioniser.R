@@ -7,6 +7,8 @@ source('global.R')
 source('ui.R')
 source('ui_ioniser.R')
 
+# funkcje dotyczace narzedzia ioniser
+
 getSummaryData <- function(dataSource, dataPath) {
   if(dataSource == 1 && isValid(dataPath)) readFast5Summary(dataPath)
   else if(dataSource == 2){
