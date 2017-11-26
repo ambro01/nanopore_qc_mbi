@@ -33,8 +33,25 @@ ioniserRadioList <- c("Files from disc" = 1,
 
 poreNone = "---"
 poreHistogram = "Histogram"
+poreCumulativeYield = "Cumulative yield"
+poreChannelYield = "Channel yield"
+poreChannelReads = "Channel reads"
+poreChannelSummary = "Channel summary"
+poreLayout = "Layout"
+
 poreSelectList <- c(poreNone,
-                    poreHistogram)
+                    poreHistogram,
+                    poreCumulativeYield,
+                    poreChannelYield,
+                    poreChannelReads,
+                    poreChannelSummary,
+                    poreLayout)
+
+poreSummaryStats = "Pore summary stats"
+poreSummariseByChannel = "Summarise by channel"
+poreSelectListStat <- c(poreNone,
+                        poreSummaryStats,
+                        poreSummariseByChannel)
 
 isValid <- function(x){
   return (!is.null(x) && length(x) > 0)

@@ -11,11 +11,31 @@ getPoreData <- function(dirPath){
 generatePorePlotByFunctionName <- function(x, data){
   if(x == poreHistogram) {
     plot.length.histogram(data)
-    p <- recordPlot()
-    plot.new()
-    return (p)
-  }
-  else {
+  } else if(x == poreCumulativeYield){
+    plot.cumulative.yield(data)
+  } else if(x == poreChannelYield){
+    plot.channel.yield(data)
+  } else if(x == poreChannelReads){
+    plot.channel.reads(data)
+  } else if(x == poreChannelSummary){
+    plot.channel.summary(summarise.by.channel(data, nchannels=512))
+  } else if(x == poreLayout){
+    show.layout()
+  } else {
    return (NULL)
+  }
+  
+  p <- recordPlot()
+  plot.new()
+  return (p)
+}
+
+generatePoreStatByFunctionName <- function(x, data){
+  if(x == poreSummaryStats) {
+    run.summary.stats(data)
+  } else if(x == poreSummariseByChannel){
+    summarise.by.channel(data)
+  } else {
+    return (NULL)
   }
 }

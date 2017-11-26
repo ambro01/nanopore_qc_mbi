@@ -4,7 +4,7 @@ tabIoniser <- tabPanel("IONiser",
                value = "tabIoniser",
                # Sidebar layout with input and output definitions ----
                sidebarLayout(
-                 sidebarPanel(
+                 sidebarPanel(width = 2,
                    radioButtons("ioniserRadio", "Choose data source",
                                 choices = ioniserRadioList,
                                 selected = "Data set 1"),
@@ -21,6 +21,6 @@ tabIoniser <- tabPanel("IONiser",
                  ),
                  
                  mainPanel(
-                   h4(textOutput(outputId = "plotDescription")),
+                   h4(textOutput(outputId = "ioniserPlotDescription")),
                    tags$hr(),
                    plotOutput(outputId = "plotIoniser", width = "600px", height = "400px"))))

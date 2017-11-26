@@ -10,8 +10,9 @@ source('ui_ioniser.R')
 # funkcje dotyczace narzedzia ioniser
 
 getSummaryData <- function(dataSource, dataPath) {
-  if(dataSource == 1 && isValid(dataPath)) readFast5Summary(dataPath)
-  else if(dataSource == 2){
+  if(dataSource == 1 && isValid(dataPath)){
+    readFast5Summary(dataPath)
+  } else if(dataSource == 2){
     data(s.typhi.rep1) 
     return(s.typhi.rep1)
   } else if(dataSource == 3){

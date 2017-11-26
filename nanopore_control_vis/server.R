@@ -36,7 +36,7 @@ server <- function(input, output, session) {
     
     # ustawienie wartosci wyjsc
     output$plotIoniser <- renderPlot(yIoniser)
-    output$plotDescription <- renderText(descIoniser)
+    output$ioniserPlotDescription <- renderText(descIoniser)
   })
   
   ############ pore ###########
@@ -49,19 +49,41 @@ server <- function(input, output, session) {
     }
   })
   
+  poreSummaryData <- NULL
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
-    
     dirPath <- readDirectoryInput(session, 'poreDir')
-    poreSummaryData <- if (isValid(dirPath)){
-        getPoreData(dirPath)
-      }
-    
+    # by <<- variable is also visible outside the function
+    poreSummaryData <<- if (isValid(dirPath)){
+      getPoreData(dirPath)
+    }
+  })
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
+    print(poreSummaryData)
     poreSelectedMethod <- input$poreSelect
     yPore <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
         generatePorePlotByFunctionName(poreSelectedMethod, poreSummaryData)
-      }
+    }
+    
+    descPore <- generateDescription(poreSelectedMethod)
+    
+    hide("tablePore")
+    show("plotPore")
     
     output$plotPore <- renderPlot(replayPlot(yPore))
+    output$porePlotDescription <- renderText(descPore)
   })
   
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreStatButton, handlerExpr = {
+    poreSelectedMethod <- input$poreSelectStat
+    poreStat <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
+      generatePoreStatByFunctionName(poreSelectedMethod, poreSummaryData)
+    }
+    
+    hide("plotPore")
+    hide("porePlotDescription")
+    show("tablePore")
+    
+    output$tablePore <- renderTable(poreStat)
+  })
 }
