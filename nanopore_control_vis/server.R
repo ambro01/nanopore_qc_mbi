@@ -9,6 +9,7 @@ source('global.R')
 source('ui.R')
 source('server_ioniser.R')
 source('server_pore.R')
+source('server_poretools.R')
 
 server <- function(input, output, session) {
   
@@ -44,7 +45,7 @@ server <- function(input, output, session) {
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreDir, handlerExpr = {
     # odpowiada wylacznie za uaktualnianie sciezki katalogu
     if (input$poreDir > 0) {
-      path = choose.dir(default = readDirectoryInput(session, 'poreDir'))
+      path <- choose.dir(default = readDirectoryInput(session, 'poreDir'))
       updateDirectoryInput(session, 'poreDir', value = path)
     }
   })
@@ -59,9 +60,80 @@ server <- function(input, output, session) {
     poreSelectedMethod <- input$poreSelect
     yPore <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
         generatePorePlotByFunctionName(poreSelectedMethod, poreSummaryData)
+<<<<<<< Updated upstream
       }
+=======
+    }
+    
+    descPore <- generatePoreDescription(poreSelectedMethod)
+    
+    hide("tablePore")
+    show("plotPore")
+>>>>>>> Stashed changes
     
     output$plotPore <- renderPlot(replayPlot(yPore))
   })
   
+<<<<<<< Updated upstream
+=======
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreStatButton, handlerExpr = {
+    poreSelectedMethod <- input$poreSelectStat
+    poreStat <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
+      generatePoreStatByFunctionName(poreSelectedMethod, poreSummaryData)
+    }
+    
+    hide("plotPore")
+    hide("porePlotDescription")
+    show("tablePore")
+    
+    output$tablePore <- renderTable(poreStat)
+  })
+  
+  ############ poretools ###########
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsDir, handlerExpr = {
+    # odpowiada wylacznie za uaktualnianie sciezki katalogu
+    if (input$poretoolsDir > 0) {
+      path <- choose.dir(default = readDirectoryInput(session, 'poretoolsDir'))
+      updateDirectoryInput(session, 'poretoolsDir', value = path)
+    }
+  })
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsButton, handlerExpr = {
+    dirPath <- readDirectoryInput(session, 'poretoolsDir')
+    poretoolsSelectedMethod <- input$poretoolsSelect
+    yPoretools <- if (isValid(dirPath) && isValid(poretoolsSelectedMethod)){
+      generatePoretoolsPlotByFunctionName(poretoolsSelectedMethod, dirPath)
+    }
+    
+    descPore <- generatePoretoolsDescription(poretoolsSelectedMethod)
+    
+    hide("tablePoretools")
+    show("plotPoretools")
+    
+    output$plotPoretools <- renderImage({
+      filename <- normalizePath(file.path('./images', 'foo.png'))
+      
+      # Return a list containing the filename and alt text
+      list(src = filename,
+           alt = "Image could not be loaded")
+      
+    }, deleteFile = TRUE)
+
+    output$poretoolsPlotDescription <- renderText(descPore)
+  })
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsStatButton, handlerExpr = {
+    dirPath <- readDirectoryInput(session, 'poretoolsDir')
+    poretoolsSelectedMethod <- input$poretoolsSelectStat
+    poretoolsStat <- if (isValid(dirPath) && isValid(poretoolsSelectedMethod)){
+      generatePoretoolsStatByFunctionName(poretoolsSelectedMethod, dirPath)
+    }
+    hide("plotPoretools")
+    hide("poretoolsPlotDescription")
+    show("tablePoretools")
+    
+    output$tablePoretools <- renderTable(poretoolsStat)
+  })
+>>>>>>> Stashed changes
 }
