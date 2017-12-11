@@ -4,6 +4,7 @@ library(shinyjs)
 source('global.R')
 source('ui_ioniser.R')
 source('ui_pore.R')
+source('ui_poretools.R')
 
 ui <- fluidPage(
   useShinyjs(),
@@ -12,6 +13,6 @@ ui <- fluidPage(
     id = "navbar",
     tabIoniser,
     tabPore,
-    tabPanel("xxx")
+    tabPoretools
   )
 )

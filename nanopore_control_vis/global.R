@@ -2,6 +2,8 @@ source('directoryInput.R')
 
 # deklaracja nazw metod i funkcji globalnych
 
+#-------------- IONiser ---------------
+
 ioniserNone = "---"
 ioniserReadAccumulation = "Read accumulation"
 ioniserActiveChannels = "Active channels"
@@ -31,6 +33,8 @@ ioniserRadioList <- c("Files from disc" = 1,
                       "Data set 2" = 3,
                       "Data set 3" = 4)
 
+#-------------- poRe ---------------
+
 poreNone = "---"
 poreHistogram = "Histogram"
 poreCumulativeYield = "Cumulative yield"
@@ -52,6 +56,35 @@ poreSummariseByChannel = "Summarise by channel"
 poreSelectListStat <- c(poreNone,
                         poreSummaryStats,
                         poreSummariseByChannel)
+
+#-------------- poretools ---------------
+
+poretoolsNone = "---"
+poretoolsHistogram = "Histogram"
+poretoolsYieldOfReads = "Yield of reads"
+poretoolsYieldOfBasePairs = "Yield of base pairs"
+poretoolsQualityScore = "Quality score distribution"
+poreroolsOccupancy= "Occupancy"
+
+poretoolsSelectList <- c(poretoolsNone,
+                         poretoolsHistogram,
+                         poretoolsYieldOfReads,
+                         poretoolsYieldOfBasePairs,
+                         poretoolsQualityScore,
+                         poreroolsThroughputPerformance)
+
+poretoolsSummaryStats = "Pore summary stats"
+poretoolsNucleotideComposition = "Nucleotide composition"
+poretoolsQualityScoreComposition = "Quality score composition"
+poretoolsMetadataOfEachFile = "Metadata of each file"
+
+poretoolsSelectListStat <- c(poretoolsNone,
+                             poretoolsSummaryStats,
+                             poretoolsNucleotideComposition,
+                             poretoolsQualityScoreComposition,
+                             poretoolsMetadataOfEachFile)
+
+#-------------- common ---------------
 
 isValid <- function(x){
   return (!is.null(x) && length(x) > 0)

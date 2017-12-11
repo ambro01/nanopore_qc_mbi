@@ -42,7 +42,7 @@ generatePlotByFunctionName <- function(x, data){
 
 generateDescription <- function(x){
   if (x != ioniserNone){
-    fileName <- gsub(" ", "", paste("plot_descriptions/", gsub(" ", "_", x), step=""))
+    fileName <- gsub(" ", "", paste("plot_descriptions/ioniser/", gsub(" ", "_", x), step=""))
     readChar(fileName, file.info(fileName)$size)
   } else {
     NULL

@@ -39,3 +39,12 @@ generatePoreStatByFunctionName <- function(x, data){
     return (NULL)
   }
 }
+
+generatePoreDescription <- function(x){
+  if (x != poreNone){
+    fileName <- gsub(" ", "", paste("plot_descriptions/pore/", gsub(" ", "_", x), step=""))
+    readChar(fileName, file.info(fileName)$size)
+  } else {
+    NULL
+  }
+}
