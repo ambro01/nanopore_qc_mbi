@@ -17,10 +17,17 @@ tabIoniser <- tabPanel("IONiser",
                                label = "Select plot", 
                                choices = ioniserSelectList),
                    tags$hr(),
-                   actionButton("ioniserButton", "Generate", width = "100%")
+                   actionButton("ioniserButton", "Generate", width = "100%"),
+                   tags$hr(),
+                   selectInput(inputId = "ioniserSelectStat", 
+                               label = "Select statistics", 
+                               choices = ioniserSelectListStat),
+                   tags$hr(),
+                   actionButton("ioniserStatButton", "Generate statistics", width = "100%")
                  ),
                  
                  mainPanel(
                    h4(textOutput(outputId = "ioniserPlotDescription")),
                    tags$hr(),
-                   plotOutput(outputId = "plotIoniser", width = "600px", height = "400px"))))
+                   plotOutput(outputId = "plotIoniser", width = "100%"),
+                   tableOutput(outputId = "tableIoniser"))))

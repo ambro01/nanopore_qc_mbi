@@ -40,6 +40,18 @@ generatePlotByFunctionName <- function(x, data){
   else NULL
 }
 
+generateIoniserStatByFunctionName <- function(x, data){
+  if(x == ioniserEventData){
+    eventData(data)
+  } else if(x == ioniserBaseCalled){
+    baseCalled(data)
+  } else if(x == ioniserReadInfo){
+    readInfo(data)
+  } else {
+    return (NULL)
+  }
+}
+
 generateDescription <- function(x){
   if (x != ioniserNone){
     fileName <- gsub(" ", "", paste("plot_descriptions/ioniser/", gsub(" ", "_", x), step=""))

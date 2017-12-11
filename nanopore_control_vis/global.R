@@ -28,6 +28,16 @@ ioniserSelectList <- c(ioniserNone,
                        ioniserReadsLayout,
                        ioniserBasesLayout)
 
+ioniserReadInfo = "Read info"
+ioniserSummaryInfo = "Summary info"
+ioniserEventData = "Event data"
+ioniserBaseCalled = "Base called"
+
+ioniserSelectListStat <- c(ioniserNone,
+                           ioniserReadInfo,
+                           ioniserEventData,
+                           ioniserBaseCalled)
+
 ioniserRadioList <- c("Files from disc" = 1,
                       "Data set 1" = 2,
                       "Data set 2" = 3,

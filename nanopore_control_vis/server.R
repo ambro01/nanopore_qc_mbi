@@ -35,8 +35,32 @@ server <- function(input, output, session) {
       }
     descIoniser <- generateDescription(selectedMethod)
     
+    hide("tableIoniser")
+    show("plotIoniser")
+    
     # ustawienie wartosci wyjsc
     output$plotIoniser <- renderPlot(yIoniser)
+    output$ioniserPlotDescription <- renderText(descIoniser)
+  })
+  
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserStatButton, handlerExpr = {
+    dataSource <- input$ioniserRadio
+    dataPath <- input$ioniserFile$datapath
+    summaryData <- (
+      if (isValid(dataSource)){
+        getSummaryData(dataSource, dataPath) 
+      })
+    
+    ioniserSelectedMethod <- input$ioniserSelectStat
+    ioniserStat <- if (isValid(summaryData) && isValid(ioniserSelectedMethod)){
+      generateIoniserStatByFunctionName(ioniserSelectedMethod, summaryData)
+    }
+    descIoniser <- generateDescription(ioniserSelectedMethod)
+    
+    hide("plotIoniser")
+    show("tableIoniser")
+    
+    output$tableIoniser <- renderTable(ioniserStat)
     output$ioniserPlotDescription <- renderText(descIoniser)
   })
   
@@ -59,7 +83,6 @@ server <- function(input, output, session) {
   })
   
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
-    print(poreSummaryData)
     poreSelectedMethod <- input$poreSelect
     yPore <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
         generatePorePlotByFunctionName(poreSelectedMethod, poreSummaryData)
@@ -89,6 +112,7 @@ server <- function(input, output, session) {
     show("tablePore")
     
     output$tablePore <- renderTable(poreStat)
+    output$porePlotDescription <- renderText(descPore)
   })
   
   ############ poretools ###########
