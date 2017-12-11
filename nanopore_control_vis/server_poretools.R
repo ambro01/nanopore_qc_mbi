@@ -29,27 +29,49 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
 generatePoretoolsStatByFunctionName <- function(x, dir){
   tool <- "poretools"
   func <- ""
+  list <- NULL
   if(x == poretoolsSummaryStats) {
     func <- "stats"
+    list <- c("stat", "value")
   } else if(x == poretoolsNucleotideComposition){
     func <- "nucdist"
+    list <- c("type", "count", "total", "count/total")
   } else if(x == poretoolsQualityScoreComposition){
     func <- "qualdist"
+    list <- c("symbol", "quality", "count", "total", "count/total")
   } else if(x == poretoolsMetadataOfEachFile){
     func <- "index"
+    list <- c("file name", "temlate lenght", "component lenght", "2d lenght", "asic id",
+              "asic temperature", "heatsink temperature", "channel number", "x1", "experiment start date", "experiment start time", "x2", "start date",
+              "start time", "duration", "fast5 version")
   } else {
     return (NULL)
   }
   cmd <- paste(tool, func, dir, step=" ")
   result <- base::system(cmd, intern = TRUE)
-  return(result)
+  return(generateTableFromText(result, list, func))
 }
 
 generatePoretoolsDescription <- function(x){
   if (x != poretoolsNone){
     fileName <- gsub(" ", "", paste("plot_descriptions/poretools/", gsub(" ", "_", x), step=""))
+    print(fileName)
     readChar(fileName, file.info(fileName)$size)
   } else {
     NULL
   }
+}
+
+generateTableFromText <- function(x, list, func){
+  df <- data.frame(x)
+  foo <- data.frame(do.call('rbind', strsplit(as.character(df$x),'\t',fixed=TRUE)))
+  colnames(foo) <- list
+  
+  if(func == "index"){
+    drops <- c("x1","x2")
+    foo <- foo[-c(1), ]
+    foo <- foo[ , !(names(foo) %in% drops)]
+  }
+  
+  return (foo)
 }

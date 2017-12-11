@@ -14,7 +14,7 @@ tabIoniser <- tabPanel("IONiser",
                    # Horizontal line ----
                    tags$hr(),
                    selectInput(inputId = "ioniserSelect", 
-                               label = "Select control method", 
+                               label = "Select plot", 
                                choices = ioniserSelectList),
                    tags$hr(),
                    actionButton("ioniserButton", "Generate", width = "100%")

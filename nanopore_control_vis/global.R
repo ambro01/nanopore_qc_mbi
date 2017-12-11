@@ -51,7 +51,7 @@ poreSelectList <- c(poreNone,
                     poreChannelSummary,
                     poreLayout)
 
-poreSummaryStats = "Pore summary stats"
+poreSummaryStats = "Summary stats"
 poreSummariseByChannel = "Summarise by channel"
 poreSelectListStat <- c(poreNone,
                         poreSummaryStats,
@@ -73,7 +73,7 @@ poretoolsSelectList <- c(poretoolsNone,
                          poretoolsQualityScore,
                          poreroolsOccupancy)
 
-poretoolsSummaryStats = "Pore summary stats"
+poretoolsSummaryStats = "Summary stats"
 poretoolsNucleotideComposition = "Nucleotide composition"
 poretoolsQualityScoreComposition = "Quality score composition"
 poretoolsMetadataOfEachFile = "Metadata of each file"

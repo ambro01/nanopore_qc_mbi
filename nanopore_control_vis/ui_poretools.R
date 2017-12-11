@@ -7,7 +7,7 @@ tabPoretools <- tabPanel("poretools",
                  # Horizontal line ----
                  tags$hr(),
                  selectInput(inputId = "poretoolsSelect", 
-                             label = "Select control method", 
+                             label = "Select plot", 
                              choices = poretoolsSelectList),
                  tags$hr(),
                  actionButton("poretoolsButton", "Generate plot", width = "100%"),

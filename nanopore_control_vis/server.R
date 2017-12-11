@@ -37,7 +37,7 @@ server <- function(input, output, session) {
     
     # ustawienie wartosci wyjsc
     output$plotIoniser <- renderPlot(yIoniser)
-    output$plotDescription <- renderText(descIoniser)
+    output$ioniserPlotDescription <- renderText(descIoniser)
   })
   
   ############ pore ###########
@@ -83,9 +83,9 @@ server <- function(input, output, session) {
     poreStat <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
       generatePoreStatByFunctionName(poreSelectedMethod, poreSummaryData)
     }
+    descPore <- generatePoreDescription(poreSelectedMethod)
     
     hide("plotPore")
-    hide("porePlotDescription")
     show("tablePore")
     
     output$tablePore <- renderTable(poreStat)
@@ -128,10 +128,12 @@ server <- function(input, output, session) {
     poretoolsStat <- if (isValid(dirPath) && isValid(poretoolsSelectedMethod)){
       generatePoretoolsStatByFunctionName(poretoolsSelectedMethod, dirPath)
     }
+    descPore <- generatePoretoolsDescription(poretoolsSelectedMethod)
+    
     hide("plotPoretools")
-    hide("poretoolsPlotDescription")
     show("tablePoretools")
     
     output$tablePoretools <- renderTable(poretoolsStat)
+    output$poretoolsPlotDescription <- renderText(descPore)
   })
 }
