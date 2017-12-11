@@ -71,7 +71,7 @@ poretoolsSelectList <- c(poretoolsNone,
                          poretoolsYieldOfReads,
                          poretoolsYieldOfBasePairs,
                          poretoolsQualityScore,
-                         poreroolsThroughputPerformance)
+                         poreroolsOccupancy)
 
 poretoolsSummaryStats = "Pore summary stats"
 poretoolsNucleotideComposition = "Nucleotide composition"

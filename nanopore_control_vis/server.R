@@ -68,8 +68,6 @@ server <- function(input, output, session) {
 
     hide("tablePore")
     show("plotPore")
-      }
-    }
     
     descPore <- generatePoreDescription(poreSelectedMethod)
     
@@ -117,11 +115,8 @@ server <- function(input, output, session) {
     
     output$plotPoretools <- renderImage({
       filename <- normalizePath(file.path('./images', 'foo.png'))
-      
       # Return a list containing the filename and alt text
-      list(src = filename,
-           alt = "Image could not be loaded")
-      
+      list(src = filename, alt = "Image could not be loaded")
     }, deleteFile = TRUE)
 
     output$poretoolsPlotDescription <- renderText(descPore)
