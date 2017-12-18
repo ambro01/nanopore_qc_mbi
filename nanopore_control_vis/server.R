@@ -12,13 +12,18 @@ source('server_pore.R')
 source('server_poretools.R')
 
 server <- function(input, output, session) {
-  
-  # wszystko co laczy sie z odczytywanie stanu kontrolek na widoku musi wyc zawarte w blokach
+
+  # wszystko co laczy sie z odczytywanie stanu kontrolek na widoku musi byc zawarte w blokach
   # oberwatora (jak ponizej) lub w blokach reactive()
   
   ############ ioniser ###########
-  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate'
-  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserButton, handlerExpr = {
+  
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserPlotButton, handlerExpr = {
+    hide("ioniserTable")
+    hide("ioniserPlot")
+    show("loadingImage")
+    
     # zaczytywanie wartosci zmiennych wejsciowych
     dataSource <- input$ioniserRadio
     dataPath <- input$ioniserFile$datapath
@@ -29,21 +34,27 @@ server <- function(input, output, session) {
         getSummaryData(dataSource, dataPath) 
       })
     # to wybranej metody generuje sie wykres i opis
-    selectedMethod <- input$ioniserSelect
-    yIoniser <- if (isValid(summaryData) && isValid(selectedMethod)){
-        generatePlotByFunctionName(selectedMethod, summaryData)
+    selectedMethod <- input$ioniserPlotSelect
+    plot <- if (isValid(summaryData) && isValid(selectedMethod)){
+        generateIoniserPlotByFunctionName(selectedMethod, summaryData)
       }
-    descIoniser <- generateDescription(selectedMethod)
+    description <- generateIoniserDescription(selectedMethod)
     
-    hide("tableIoniser")
-    show("plotIoniser")
+    hide("loadingImage")
+    hide("ioniserTable")
+    show("ioniserPlot")
     
     # ustawienie wartosci wyjsc
-    output$plotIoniser <- renderPlot(yIoniser)
-    output$ioniserPlotDescription <- renderText(descIoniser)
+    output$ioniserPlot <- renderPlot(plot)
+    output$ioniserDescription <- renderText(description)
   })
   
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate stat'
   observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserStatButton, handlerExpr = {
+    hide("ioniserTable")
+    hide("ioniserPlot")
+    show("loadingImage")
+    
     dataSource <- input$ioniserRadio
     dataPath <- input$ioniserFile$datapath
     summaryData <- (
@@ -51,113 +62,138 @@ server <- function(input, output, session) {
         getSummaryData(dataSource, dataPath) 
       })
     
-    ioniserSelectedMethod <- input$ioniserSelectStat
-    ioniserStat <- if (isValid(summaryData) && isValid(ioniserSelectedMethod)){
-      generateIoniserStatByFunctionName(ioniserSelectedMethod, summaryData)
+    selectedMethod <- input$ioniserStatSelect
+    stat <- if (isValid(summaryData) && isValid(selectedMethod)){
+      generateIoniserStatByFunctionName(selectedMethod, summaryData)
     }
-    descIoniser <- generateDescription(ioniserSelectedMethod)
+    description <- generateIoniserDescription(selectedMethod)
     
-    hide("plotIoniser")
-    show("tableIoniser")
+    hide("loadingImage")
+    hide("ioniserPlot")
+    show("ioniserTable")
     
-    output$tableIoniser <- renderTable(ioniserStat)
-    output$ioniserPlotDescription <- renderText(descIoniser)
+    output$ioniserTable <- renderTable(stat)
+    output$ioniserDescription <- renderText(description)
   })
   
   ############ pore ###########
   
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'
+  summaryData <- NULL
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreDir, handlerExpr = {
     # odpowiada wylacznie za uaktualnianie sciezki katalogu
     if (input$poreDir > 0) {
       path <- choose.dir(default = readDirectoryInput(session, 'poreDir'))
       updateDirectoryInput(session, 'poreDir', value = path)
-    }
-  })
-  
-  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
-    dirPath <- readDirectoryInput(session, 'poreDir')
-    # by <<- variable is also visible outside the function
-    poreSummaryData <- if (isValid(dirPath)){
+      
+      show("fileLoading")
+      dirPath <- readDirectoryInput(session, 'poreDir')
+      # by <<- variable is also visible outside the function
+      summaryData <<- if (isValid(dirPath)){
         getPoreData(dirPath)
       }
-  })
-  
-  observeEvent(ignoreNULL = TRUE, eventExpr = input$poreButton, handlerExpr = {
-    poreSelectedMethod <- input$poreSelect
-    yPore <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
-        generatePorePlotByFunctionName(poreSelectedMethod, poreSummaryData)
+      hide("fileLoading")
     }
-    descPore <- generateDescription(poreSelectedMethod)
-
-    hide("tablePore")
-    show("plotPore")
-    
-    descPore <- generatePoreDescription(poreSelectedMethod)
-    
-    hide("tablePore")
-    show("plotPore")
-    
-    output$plotPore <- renderPlot(replayPlot(yPore))
-    output$porePlotDescription <- renderText(descPore)
   })
   
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$porePlotButton, handlerExpr = {
+    hide("poreTable")
+    hide("porePlot")
+    show("loadingImage")
+    
+    selectedMethod <- input$porePlotSelect
+    plot <- if (isValid(summaryData) && isValid(selectedMethod)){
+        generatePorePlotByFunctionName(selectedMethod, summaryData)
+    } else NULL
+    
+    description <- generatePoreDescription(selectedMethod)
+    
+    hide("loadingImage")
+    hide("poreTable")
+    show("porePlot")
+    
+    output$porePlot <- renderPlot(replayPlot(plot))
+    output$poreDescription <- renderText(description)
+  })
+  
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate stat'
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreStatButton, handlerExpr = {
-    poreSelectedMethod <- input$poreSelectStat
-    poreStat <- if (isValid(poreSummaryData) && isValid(poreSelectedMethod)){
-      generatePoreStatByFunctionName(poreSelectedMethod, poreSummaryData)
+    hide("poreTable")
+    hide("porePlot")
+    show("loadingImage")
+    
+    selectedMethod <- input$poreStatSelect
+    stat <- if (isValid(summaryData) && isValid(selectedMethod)){
+      generatePoreStatByFunctionName(selectedMethod, summaryData)
     }
-    descPore <- generatePoreDescription(poreSelectedMethod)
+    description <- generatePoreDescription(selectedMethod)
     
-    hide("plotPore")
-    show("tablePore")
+    hide("loadingImage")
+    hide("porePlot")
+    show("poreTable")
     
-    output$tablePore <- renderTable(poreStat)
-    output$porePlotDescription <- renderText(descPore)
+    output$poreTable <- renderTable(stat)
+    output$poreDescription <- renderText(description)
   })
   
   ############ poretools ###########
   
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'
+  path <- NULL
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsDir, handlerExpr = {
     # odpowiada wylacznie za uaktualnianie sciezki katalogu
     if (input$poretoolsDir > 0) {
-      path <- choose.dir(default = readDirectoryInput(session, 'poretoolsDir'))
+      path <<- choose.dir(default = readDirectoryInput(session, 'poretoolsDir'))
       updateDirectoryInput(session, 'poretoolsDir', value = path)
     }
   })
   
-  observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsButton, handlerExpr = {
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsPlotButton, handlerExpr = {
+    hide("poretoolsTable")
+    hide("poretoolsPlot")
+    show("loadingImage")
+    
     dirPath <- readDirectoryInput(session, 'poretoolsDir')
-    poretoolsSelectedMethod <- input$poretoolsSelect
-    yPoretools <- if (isValid(dirPath) && isValid(poretoolsSelectedMethod)){
-      generatePoretoolsPlotByFunctionName(poretoolsSelectedMethod, dirPath)
+    selectedMethod <- input$poretoolsPlotSelect
+    
+    if (isValid(dirPath) && isValid(selectedMethod)){
+      generatePoretoolsPlotByFunctionName(selectedMethod, dirPath)
     }
     
-    descPore <- generatePoretoolsDescription(poretoolsSelectedMethod)
+    description <- generatePoretoolsDescription(selectedMethod)
     
-    hide("tablePoretools")
-    show("plotPoretools")
+    hide("loadingImage")
+    hide("poretoolsTable")
+    show("poretoolsPlot")
     
-    output$plotPoretools <- renderImage({
+    output$poretoolsPlot <- renderImage({
       filename <- normalizePath(file.path('./images', 'foo.png'))
       # Return a list containing the filename and alt text
-      list(src = filename, alt = "Image could not be loaded")
+      list(src = filename)
     }, deleteFile = TRUE)
 
-    output$poretoolsPlotDescription <- renderText(descPore)
+    output$poretoolsDescription <- renderText(description)
   })
   
+  # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate stat'
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsStatButton, handlerExpr = {
+    hide("poretoolsTable")
+    hide("poretoolsPlot")
+    show("loadingImage")
+    
     dirPath <- readDirectoryInput(session, 'poretoolsDir')
-    poretoolsSelectedMethod <- input$poretoolsSelectStat
-    poretoolsStat <- if (isValid(dirPath) && isValid(poretoolsSelectedMethod)){
-      generatePoretoolsStatByFunctionName(poretoolsSelectedMethod, dirPath)
+    selectedMethod <- input$poretoolsStatSelect
+    
+    stat <- if (isValid(dirPath) && isValid(selectedMethod)){
+      generatePoretoolsStatByFunctionName(selectedMethod, dirPath)
     }
-    descPore <- generatePoretoolsDescription(poretoolsSelectedMethod)
+    descrption <- generatePoretoolsDescription(selectedMethod)
     
-    hide("plotPoretools")
-    show("tablePoretools")
+    hide("loadingImage")
+    hide("poretoolsPlot")
+    show("poretoolsTable")
     
-    output$tablePoretools <- renderTable(poretoolsStat)
-    output$poretoolsPlotDescription <- renderText(descPore)
+    output$poretoolsTable <- renderTable(stat)
+    output$poretoolsDescription <- renderText(descrption)
   })
 }

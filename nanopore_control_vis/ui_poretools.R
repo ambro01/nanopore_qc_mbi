@@ -6,20 +6,23 @@ tabPoretools <- tabPanel("poretools",
                  actionButton("poretoolsLoadDataButton", "Load data", width = "100%"),
                  # Horizontal line ----
                  tags$hr(),
-                 selectInput(inputId = "poretoolsSelect", 
+                 selectInput(inputId = "poretoolsPlotSelect", 
                              label = "Select plot", 
                              choices = poretoolsSelectList),
                  tags$hr(),
-                 actionButton("poretoolsButton", "Generate plot", width = "100%"),
+                 actionButton("poretoolsPlotButton", "Generate plot", width = "100%"),
                  tags$hr(),
-                 selectInput(inputId = "poretoolsSelectStat", 
+                 selectInput(inputId = "poretoolsStatSelect", 
                              label = "Select statistics", 
                              choices = poretoolsSelectListStat),
                  tags$hr(),
                  actionButton("poretoolsStatButton", "Generate statistics", width = "100%")
                ),
                mainPanel(
-                 h4(textOutput(outputId = "poretoolsPlotDescription")),
+                 h4(textOutput(outputId = "poretoolsDescription")),
                  tags$hr(),
-                 imageOutput(outputId = "plotPoretools", width = "100%"),
-                 tableOutput(outputId = "tablePoretools"))))
+                 hidden(
+                   tags$img(id = "loadingImage", src = "loading.gif")
+                 ),
+                 imageOutput(outputId = "poretoolsPlot", height = "640px"),
+                 tableOutput(outputId = "poretoolsTable"))))

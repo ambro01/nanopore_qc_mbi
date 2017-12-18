@@ -3,23 +3,29 @@ tabPore <- tabPanel("poRe",
              sidebarLayout(
                sidebarPanel(width = 2,
                  directoryInput("poreDir", "Choose FAST5 dir", value = '~'),
+                 hidden(
+                   tags$img(id = "fileLoading", src = "file_loading.gif")
+                 ),
                  actionButton("poreLoadDataButton", "Load data", width = "100%"),
                  # Horizontal line ----
                  tags$hr(),
-                 selectInput(inputId = "poreSelect", 
+                 selectInput(inputId = "porePlotSelect", 
                              label = "Select plot", 
                              choices = poreSelectList),
                  tags$hr(),
-                 actionButton("poreButton", "Generate plot", width = "100%"),
+                 actionButton("porePlotButton", "Generate plot", width = "100%"),
                  tags$hr(),
-                 selectInput(inputId = "poreSelectStat", 
+                 selectInput(inputId = "poreStatSelect", 
                              label = "Select statistics", 
                              choices = poreSelectListStat),
                  tags$hr(),
                  actionButton("poreStatButton", "Generate statistics", width = "100%")
                ),
                mainPanel(
-                 h4(textOutput(outputId = "porePlotDescription")),
+                 h4(textOutput(outputId = "poreDescription")),
                  tags$hr(),
-                 plotOutput(outputId = "plotPore", width = "100%"),
-                 tableOutput(outputId = "tablePore"))))
+                 hidden(
+                   tags$img(id = "loadingImage", src = "loading.gif")
+                 ),
+                 plotOutput(outputId = "porePlot", height = "640px"),
+                 tableOutput(outputId = "poreTable"))))

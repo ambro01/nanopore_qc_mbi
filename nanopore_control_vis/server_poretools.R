@@ -15,7 +15,7 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
     func <- "yield_plot --plot-type basepairs"
   } else if(x == poretoolsQualityScore){
     func <- "qualpos"
-  } else if(x == poreroolsThroughputPerformance){
+  } else if(x == poreroolsOccupancy){
     func <- "occupancy"
   } else {
    return (NULL)
@@ -55,11 +55,8 @@ generatePoretoolsStatByFunctionName <- function(x, dir){
 generatePoretoolsDescription <- function(x){
   if (x != poretoolsNone){
     fileName <- gsub(" ", "", paste("plot_descriptions/poretools/", gsub(" ", "_", x), step=""))
-    print(fileName)
     readChar(fileName, file.info(fileName)$size)
-  } else {
-    NULL
-  }
+  } else NULL
 }
 
 generateTableFromText <- function(x, list, func){

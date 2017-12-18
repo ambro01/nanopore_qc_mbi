@@ -26,7 +26,7 @@ getSummaryData <- function(dataSource, dataPath) {
   }
 }
 
-generatePlotByFunctionName <- function(x, data){
+generateIoniserPlotByFunctionName <- function(x, data){
   if(x == ioniserReadAccumulation) plotReadAccumulation(data)
   else if(x == ioniserActiveChannels) plotActiveChannels(data)
   else if(x == ioniserReadCategoryCounts) plotReadCategoryCounts(data)
@@ -52,7 +52,7 @@ generateIoniserStatByFunctionName <- function(x, data){
   }
 }
 
-generateDescription <- function(x){
+generateIoniserDescription <- function(x){
   if (x != ioniserNone){
     fileName <- gsub(" ", "", paste("plot_descriptions/ioniser/", gsub(" ", "_", x), step=""))
     readChar(fileName, file.info(fileName)$size)

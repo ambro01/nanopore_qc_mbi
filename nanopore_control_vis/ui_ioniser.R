@@ -1,4 +1,5 @@
 source('global.R')
+source('css.R')
 
 tabIoniser <- tabPanel("IONiser", 
                value = "tabIoniser",
@@ -13,21 +14,23 @@ tabIoniser <- tabPanel("IONiser",
                              accept = c(".fast5")),
                    # Horizontal line ----
                    tags$hr(),
-                   selectInput(inputId = "ioniserSelect", 
+                   selectInput(inputId = "ioniserPlotSelect", 
                                label = "Select plot", 
                                choices = ioniserSelectList),
                    tags$hr(),
-                   actionButton("ioniserButton", "Generate", width = "100%"),
+                   actionButton("ioniserPlotButton", "Generate", width = "100%"),
                    tags$hr(),
-                   selectInput(inputId = "ioniserSelectStat", 
+                   selectInput(inputId = "ioniserStatSelect", 
                                label = "Select statistics", 
                                choices = ioniserSelectListStat),
-                   tags$hr(),
                    actionButton("ioniserStatButton", "Generate statistics", width = "100%")
                  ),
                  
                  mainPanel(
-                   h4(textOutput(outputId = "ioniserPlotDescription")),
+                   h4(textOutput(outputId = "ioniserDescription")),
                    tags$hr(),
-                   plotOutput(outputId = "plotIoniser", width = "100%"),
-                   tableOutput(outputId = "tableIoniser"))))
+                   hidden(
+                    tags$img(id = "loadingImage", src = "loading.gif")
+                   ),
+                   plotOutput(outputId = "ioniserPlot", height = "640px"),
+                   tableOutput(outputId = "ioniserTable"))))
