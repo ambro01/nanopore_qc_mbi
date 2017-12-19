@@ -7,6 +7,7 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
   tool <- "poretools"
   fileName <- "images/foo.png"
   func <- ""
+  
   if(x == poretoolsHistogram) {
     func <- "hist"
   } else if(x == poretoolsYieldOfReads){
@@ -21,15 +22,22 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
    return (NULL)
   }
   
-  cmd <- paste(tool, func, "--saveas", fileName, dir, step=" ")
-  system(cmd)
-  return (NULL)
+  out <- tryCatch({
+    cmd <- paste(tool, func, "--saveas", fileName, dir, step=" ")
+    return (system(cmd))
+  },
+  error = function(cond){
+    return (NULL)
+  })
+  
+  return (out)
 }
 
 generatePoretoolsStatByFunctionName <- function(x, dir){
   tool <- "poretools"
   func <- ""
   list <- NULL
+  
   if(x == poretoolsSummaryStats) {
     func <- "stats"
     list <- c("stat", "value")
@@ -44,19 +52,29 @@ generatePoretoolsStatByFunctionName <- function(x, dir){
     list <- c("file name", "temlate lenght", "component lenght", "2d lenght", "asic id",
               "asic temperature", "heatsink temperature", "channel number", "x1", "experiment start date", "experiment start time", "x2", "start date",
               "start time", "duration", "fast5 version")
-  } else {
+  } else return (NULL)
+  
+  out <- tryCatch({
+    cmd <- paste(tool, func, dir, step=" ")
+    result <- base::system(cmd, intern = TRUE)
+    generateTableFromText(result, list, func)
+  },
+  error = function(cond){
     return (NULL)
-  }
-  cmd <- paste(tool, func, dir, step=" ")
-  result <- base::system(cmd, intern = TRUE)
-  return(generateTableFromText(result, list, func))
+  })
+  
+  return(out)
 }
 
-generatePoretoolsDescription <- function(x){
+generatePoretoolsDescription <- function(x, y){
+  if(is.null(y)){
+    return ("Generating has failed. Data could not be loaded.")
+  }
+  
   if (x != poretoolsNone){
     fileName <- gsub(" ", "", paste("plot_descriptions/poretools/", gsub(" ", "_", x), step=""))
-    readChar(fileName, file.info(fileName)$size)
-  } else NULL
+    return (readChar(fileName, file.info(fileName)$size))
+  } else return (NULL)
 }
 
 generateTableFromText <- function(x, list, func){

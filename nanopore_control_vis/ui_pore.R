@@ -4,9 +4,8 @@ tabPore <- tabPanel("poRe",
                sidebarPanel(width = 2,
                  directoryInput("poreDir", "Choose FAST5 dir", value = '~'),
                  hidden(
-                   tags$img(id = "fileLoading", src = "file_loading.gif")
+                   tags$img(id = "fileLoading", src = "file_loading.gif", width = "100%")
                  ),
-                 actionButton("poreLoadDataButton", "Load data", width = "100%"),
                  # Horizontal line ----
                  tags$hr(),
                  selectInput(inputId = "porePlotSelect", 

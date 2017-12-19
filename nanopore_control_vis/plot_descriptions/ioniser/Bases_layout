@@ -1,2 +1,2 @@
-Creates a plot representing the layout of a MinION flow cell. Each circle represents an idividual channel with the intensity relecting the total kilobases of sequence produced. This only considers reads marked as template or complement, 2D reads are ignored as they are generated from the former two. The function plots the cumulative number of bases read by a channel.
+A graph of the layout of a MinION flow cell. Each circle represents an idividual channel with the intensity relecting the total kilobases of sequence produced. This only considers reads marked as template or complement, 2D reads are ignored as they are generated from the former two. The function plots the cumulative number of bases read by a channel.
 

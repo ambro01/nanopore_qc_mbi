@@ -3,7 +3,6 @@ tabPoretools <- tabPanel("poretools",
              sidebarLayout(
                sidebarPanel(width = 2,
                  directoryInput("poretoolsDir", "Choose FAST5 dir", value = '~'),
-                 actionButton("poretoolsLoadDataButton", "Load data", width = "100%"),
                  # Horizontal line ----
                  tags$hr(),
                  selectInput(inputId = "poretoolsPlotSelect", 

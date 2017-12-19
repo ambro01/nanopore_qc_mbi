@@ -1,1 +1,1 @@
-Barplot of the number of reads per channel. Plots to the current device and returns data as a data frame.
+A barplot of the number of reads per channel.
