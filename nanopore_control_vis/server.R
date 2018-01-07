@@ -16,6 +16,27 @@ server <- function(input, output, session) {
   # wszystko co laczy sie z odczytywanie stanu kontrolek na widoku musi byc zawarte w blokach
   # oberwatora (jak ponizej) lub w blokach reactive()
   
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$navbar, handlerExpr = {
+    name <- input$navbar
+    description <- generateProgramDescription(name)
+    if(name == "ioniser"){
+      hide("ioniserTable")
+      hide("ioniserPlot")
+      show("ioniserDescription")
+      output$ioniserDescription <- renderText(description)
+    } else if(name == "pore"){
+      hide("poreTable")
+      hide("porePlot")
+      show("poreDescription")
+      output$poreDescription <- renderText(description)
+    } else if(name == "poretools"){
+      hide("poretoolsTable")
+      hide("poretoolsPlot")
+      show("poretoolsDescription")
+      output$poretoolsDescription <- renderText(description)
+    }
+  })
+  
   ############ ioniser ###########
   
   # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'

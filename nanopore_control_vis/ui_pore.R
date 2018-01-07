@@ -1,5 +1,5 @@
 tabPore <- tabPanel("poRe",
-             value = "tabPore",
+             value = "pore",
              sidebarLayout(
                sidebarPanel(width = 2,
                  directoryInput("poreDir", "Choose FAST5 dir", value = '~'),

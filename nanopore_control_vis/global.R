@@ -99,3 +99,11 @@ poretoolsSelectListStat <- c(poretoolsNone,
 isValid <- function(x){
   return (!is.null(x) && length(x) > 0)
 }
+
+generateProgramDescription <- function(name){
+  if(is.null(name)){
+    return (NULL)
+  }
+  fileName <- gsub(" ", "", paste("plot_descriptions/common/", gsub(" ", "_", name), step = ""))
+  return (readChar(fileName, file.info(fileName)$size))
+}

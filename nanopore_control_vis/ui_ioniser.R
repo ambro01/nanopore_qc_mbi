@@ -1,8 +1,8 @@
 source('global.R')
 source('css.R')
 
-tabIoniser <- tabPanel("IONiser", 
-               value = "tabIoniser",
+tabIoniser <- tabPanel("IONiseR", 
+               value = "ioniser",
                # Sidebar layout with input and output definitions ----
                sidebarLayout(
                  sidebarPanel(width = 2,
