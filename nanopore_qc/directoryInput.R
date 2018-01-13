@@ -33,9 +33,9 @@ if (Sys.info()['sysname'] == 'Darwin') {
     }
     args = sub('{{default}}', default, args, fixed = T)
 
-    suppressWarnings({
-      path = system2(command, args = args, stderr = TRUE)
-    })
+    #suppressWarnings({
+    #  path = system2(command, args = args, stderr = TRUE)
+    #})
     if (!is.null(attr(path, 'status')) && attr(path, 'status')) {
       # user canceled
       path = NA
@@ -48,9 +48,9 @@ if (Sys.info()['sysname'] == 'Darwin') {
     command = 'zenity'
     args = '--file-selection --directory --title="Choose a folder"'
     
-    suppressWarnings({
-      path = system2(command, args = args, stderr = TRUE)
-    })
+    #suppressWarnings({
+    #  path = system2(command, args = args, stderr = TRUE)
+    #})
     
     #Return NA if user hits cancel
     if (!is.null(attr(path, 'status')) && attr(path, 'status')) {
@@ -86,7 +86,6 @@ if (Sys.info()['sysname'] == 'Darwin') {
 #' A directory input control that can be added to a UI definition.
 #'
 #' @seealso
-#' \link{updateDirectoryInput}, \link{readDirectoryInput}, \link[utils]{choose.dir}
 directoryInput = function(inputId, label, value = NULL) {
   if (!is.null(value) && !is.na(value)) {
     value = path.expand(value)
