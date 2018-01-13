@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rproj
+
+shiny-server.conf
+Dockerfile
+poRe_0.24.tar.gz

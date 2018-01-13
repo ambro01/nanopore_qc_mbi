@@ -1,2 +1,0 @@
-A bar plot showing the breakdown of read types found in a set of fast5 files. There is a strict hierarchy to the types of read that can be found in a fast5 file. 
-A full 2D read requires both a complement and a template strand to have been read correctly. Similarly, a complement strand can only be present if the template was read successfully. For an ideal dataset all four bars will be the same height. The drop between bars can give some indication of data quality.
