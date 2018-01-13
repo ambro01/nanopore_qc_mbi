@@ -38,16 +38,24 @@ server <- function(input, output, session) {
   
   ############ ioniser ###########
   
+  # wybor zrodla danych
+  dataSource <- NULL
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserRadio, handlerExpr = {
+    dataSource <<- input$ioniserRadio
+  })
+  
+  # zaczytywanie sciezek wskazanych plikow
+  dataPath <- NULL
+  observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserFile, handlerExpr = {
+    dataPath <<- input$ioniserFile$datapath
+  })
+  
   # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'
   observeEvent(ignoreNULL = TRUE, eventExpr = input$ioniserPlotButton, handlerExpr = {
     hide("ioniserTable")
     hide("ioniserPlot")
     hide("ioniserDescription")
     show("loadingImage")
-    
-    # zaczytywanie wartosci zmiennych wejsciowych
-    dataSource <- input$ioniserRadio
-    dataPath <- input$ioniserFile$datapath
     
     #dane wejciowe moga zostac zaczytane z plikow lub z biblioteki 
     summaryData <- (
@@ -78,8 +86,6 @@ server <- function(input, output, session) {
     hide("ioniserPlot")
     show("loadingImage")
     
-    dataSource <- input$ioniserRadio
-    dataPath <- input$ioniserFile$datapath
     summaryData <- (
       if (isValid(dataSource)){
         getSummaryData(dataSource, dataPath) 
@@ -107,16 +113,13 @@ server <- function(input, output, session) {
 
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poreDir, handlerExpr = {
     # odpowiada wylacznie za uaktualnianie sciezki katalogu
-    if (input$poreDir > 0) {
-      path <<- choose.dir(default = readDirectoryInput(session, 'poreDir'))
-      updateDirectoryInput(session, 'poreDir', value = path)
+    path <<- dirname(input$poreDir$datapath)
       # by <<- variable is also visible outside the function
-      show("fileLoading")
-      summaryData <<- if (isValid(path)){
-        getPoreData(path)
-      }
-      hide("fileLoading")
+    show("fileLoading")
+    summaryData <<- if (isValid(path)){
+      getPoreData(path)
     }
+      hide("fileLoading")
   })
   
   observeEvent(ignoreNULL = TRUE, eventExpr = input$porePlotButton, handlerExpr = {
@@ -166,13 +169,10 @@ server <- function(input, output, session) {
   ############ poretools ###########
   
   # wszystko co ponizej wykona sie po wcisnieciu przycisku 'generate plot'
-  path <- NULL
+  dirPath <- NULL
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsDir, handlerExpr = {
     # odpowiada wylacznie za uaktualnianie sciezki katalogu
-    if (input$poretoolsDir > 0) {
-      path <<- choose.dir(default = readDirectoryInput(session, 'poretoolsDir'))
-      updateDirectoryInput(session, 'poretoolsDir', value = path)
-    }
+    dirPath <<- dirname(input$poretoolsDir$datapath)
   })
   
   observeEvent(ignoreNULL = TRUE, eventExpr = input$poretoolsPlotButton, handlerExpr = {
@@ -181,7 +181,6 @@ server <- function(input, output, session) {
     hide("poretoolsPlot")
     show("loadingImage")
     
-    dirPath <- readDirectoryInput(session, 'poretoolsDir')
     selectedMethod <- input$poretoolsPlotSelect
     
     plot <- if (isValid(dirPath) && isValid(selectedMethod)){
@@ -211,7 +210,6 @@ server <- function(input, output, session) {
     hide("poretoolsPlot")
     show("loadingImage")
     
-    dirPath <- readDirectoryInput(session, 'poretoolsDir')
     selectedMethod <- input$poretoolsStatSelect
     
     stat <- if (isValid(dirPath) && isValid(selectedMethod)){

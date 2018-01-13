@@ -2,7 +2,7 @@ tabPoretools <- tabPanel("poretools",
              value = "poretools",
              sidebarLayout(
                sidebarPanel(width = 2,
-                 directoryInput("poretoolsDir", "Choose FAST5 dir", value = '~'),
+                 fileInput("poretoolsDir", "Choose FAST5 files", multiple = TRUE),
                  # Horizontal line ----
                  tags$hr(),
                  selectInput(inputId = "poretoolsPlotSelect", 

@@ -2,7 +2,7 @@ tabPore <- tabPanel("poRe",
              value = "pore",
              sidebarLayout(
                sidebarPanel(width = 2,
-                 directoryInput("poreDir", "Choose FAST5 dir", value = '~'),
+                 fileInput("poreDir", "Choose FAST5 files", multiple = TRUE),
                  hidden(
                    tags$img(id = "fileLoading", src = "file_loading.gif", width = "100%")
                  ),
@@ -18,7 +18,8 @@ tabPore <- tabPanel("poRe",
                              label = "Select statistics", 
                              choices = poreSelectListStat),
                  tags$hr(),
-                 actionButton("poreStatButton", "Generate statistics", width = "100%")
+                 actionButton("poreStatButton", "Generate statistics", width = "100%"),
+                 HTML("<script type='text/javascript' src='getFolders.js'></script>")
                ),
                mainPanel(
                  h4(textOutput(outputId = "poreDescription")),
