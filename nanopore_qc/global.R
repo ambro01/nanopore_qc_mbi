@@ -1,5 +1,3 @@
-source('directoryInput.R')
-
 # deklaracja nazw metod i funkcji globalnych
 
 #-------------- IONiser ---------------

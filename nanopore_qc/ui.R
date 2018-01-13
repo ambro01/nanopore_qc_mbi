@@ -1,6 +1,5 @@
 library(shiny)
 library(shinyjs)
-library(shinyFiles)
 
 source('global.R')
 source('ui_ioniser.R')
