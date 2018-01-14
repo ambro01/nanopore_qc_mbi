@@ -46,7 +46,7 @@ generateIoniserPlotByFunctionName <- function(x, data){
     else NULL
   },
   error = function(cond){
-    return (NULL)
+    return (error)
   })
   return (out)
 }

@@ -75,7 +75,7 @@ server <- function(input, output, session) {
     show("ioniserPlot")
     
     # ustawienie wartosci wyjsc
-    output$ioniserPlot <- renderPlot(plot)
+    output$ioniserPlot <- plot
     output$ioniserDescription <- renderText(description)
   })
   
@@ -140,7 +140,7 @@ server <- function(input, output, session) {
     show("poreDescription")
     show("porePlot")
     
-    output$porePlot <- renderPlot(replayPlot(plot))
+    output$porePlot <- plot
     output$poreDescription <- renderText(description)
   })
   

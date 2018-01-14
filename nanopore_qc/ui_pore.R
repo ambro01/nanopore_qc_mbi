@@ -18,8 +18,7 @@ tabPore <- tabPanel("poRe",
                              label = "Select statistics", 
                              choices = poreSelectListStat),
                  tags$hr(),
-                 actionButton("poreStatButton", "Generate statistics", width = "100%"),
-                 HTML("<script type='text/javascript' src='getFolders.js'></script>")
+                 actionButton("poreStatButton", "Generate statistics", width = "100%")
                ),
                mainPanel(
                  h4(textOutput(outputId = "poreDescription")),

@@ -49,15 +49,13 @@ poreCumulativeYield = "Cumulative yield"
 poreChannelYield = "Channel yield"
 poreChannelReads = "Channel reads"
 poreChannelSummary = "Channel summary"
-poreLayout = "Layout"
 
 poreSelectList <- c(poreNone,
                     poreHistogram,
                     poreCumulativeYield,
                     poreChannelYield,
                     poreChannelReads,
-                    poreChannelSummary,
-                    poreLayout)
+                    poreChannelSummary)
 
 poreSummaryStats = "Summary stats"
 poreSummariseByChannel = "Summarise by channel"
