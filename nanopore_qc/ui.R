@@ -8,11 +8,31 @@ source('ui_poretools.R')
 
 ui <- fluidPage(
   useShinyjs(),
-  navbarPage(
-    "Control analyses of DNA data from MinION seqencer",
-    id = "navbar",
-    tabIoniser,
-    tabPore,
-    tabPoretools
+  sidebarPanel(width = 2,
+               radioButtons("dataSource", "Choose data source",
+                            choices = defaultDataChoiceList,
+                            selected = 1),
+               fileInput("fileInput", "Choose FAST5 files", multiple = TRUE),
+               # Horizontal line ----
+               tags$hr(),
+               selectInput(inputId = "plotSelect", 
+                           label = "Select plot",
+                           choices = c("---")),
+               tags$hr(),
+               actionButton("plotButton", "Generate", width = "100%"),
+               tags$hr(),
+               selectInput(inputId = "statSelect", 
+                           label = "Select statistics",
+                           choices = c("---")),
+               actionButton("statButton", "Generate statistics", width = "100%")
+  ),
+  
+  mainPanel(
+    tabsetPanel(id = "navbar",
+      tabPanel("IONiseR", tabIoniser), 
+      tabPanel("poRe", tabPore), 
+      tabPanel("poreTools", tabPoretools)
+    )
   )
 )
+

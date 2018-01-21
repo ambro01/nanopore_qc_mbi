@@ -14,7 +14,7 @@ ioniserCurrentByTime = "Current by time"
 ioniserReadsLayout = "Reads layout"
 ioniserBasesLayout = "Bases layout"
 
-ioniserSelectList <- c(ioniserNone,
+ioniserPlotSelectList <- c(ioniserNone,
                        ioniserReadAccumulation, 
                        ioniserActiveChannels, 
                        ioniserReadCategoryCounts,
@@ -31,12 +31,12 @@ ioniserSummaryInfo = "Summary info"
 ioniserEventData = "Event data"
 ioniserBaseCalled = "Base called"
 
-ioniserSelectListStat <- c(ioniserNone,
+ioniserStatSelectList <- c(ioniserNone,
                            ioniserReadInfo,
                            ioniserEventData,
                            ioniserBaseCalled)
 
-ioniserRadioList <- c("Files from disc" = 1,
+ioniserDataChoiceList <- c("Files from disc" = 1,
                       "Data set 1" = 2,
                       "Data set 2" = 3,
                       "Data set 3" = 4)
@@ -50,7 +50,7 @@ poreChannelYield = "Channel yield"
 poreChannelReads = "Channel reads"
 poreChannelSummary = "Channel summary"
 
-poreSelectList <- c(poreNone,
+porePlotSelectList <- c(poreNone,
                     poreHistogram,
                     poreCumulativeYield,
                     poreChannelYield,
@@ -58,10 +58,12 @@ poreSelectList <- c(poreNone,
                     poreChannelSummary)
 
 poreSummaryStats = "Summary stats"
-poreSummariseByChannel = "Summarise by channel"
-poreSelectListStat <- c(poreNone,
+poreSummaryByChannel = "Summary by channel"
+poreStatSelectList <- c(poreNone,
                         poreSummaryStats,
-                        poreSummariseByChannel)
+                        poreSummaryByChannel)
+
+poreDataChoiceList <- c("Files from disc" = 1)
 
 #-------------- poretools ---------------
 
@@ -72,7 +74,7 @@ poretoolsYieldOfBasePairs = "Yield of base pairs"
 poretoolsQualityScore = "Quality score distribution"
 poreroolsOccupancy= "Occupancy"
 
-poretoolsSelectList <- c(poretoolsNone,
+poretoolsPlotSelectList <- c(poretoolsNone,
                          poretoolsHistogram,
                          poretoolsYieldOfReads,
                          poretoolsYieldOfBasePairs,
@@ -84,13 +86,17 @@ poretoolsNucleotideComposition = "Nucleotide composition"
 poretoolsQualityScoreComposition = "Quality score composition"
 poretoolsMetadataOfEachFile = "Metadata of each file"
 
-poretoolsSelectListStat <- c(poretoolsNone,
+poretoolsStatSelectList <- c(poretoolsNone,
                              poretoolsSummaryStats,
                              poretoolsNucleotideComposition,
                              poretoolsQualityScoreComposition,
                              poretoolsMetadataOfEachFile)
 
+poretoolsDataChoiceList <- c("Files from disc" = 1)
+
 #-------------- common ---------------
+
+defaultDataChoiceList <- c("Files from disc" = 1)
 
 isValid <- function(x){
   return (!is.null(x) && length(x) > 0)
