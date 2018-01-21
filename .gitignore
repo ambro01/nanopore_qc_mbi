@@ -4,7 +4,4 @@
 .Ruserdata
 .Rproj
 
-shiny-server.conf
-shiny-server.sh
-Dockerfile
 poRe_0.24.tar.gz
