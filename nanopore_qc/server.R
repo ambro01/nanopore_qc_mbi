@@ -141,7 +141,7 @@ server <- function(input, output, session) {
       show("poretoolsPlot")
       
       output$poretoolsPlot <- renderImage({
-        filename <- normalizePath(file.path('./images', 'foo.png'))
+        filename <- base::normalizePath(file.path('./images', 'foo.png'))
         # Return a list containing the filename and alt text
         list(src = filename)
       }, deleteFile = TRUE)

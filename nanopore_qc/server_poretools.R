@@ -24,7 +24,7 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
   
   out <- tryCatch({
     cmd <- paste(tool, func, "--saveas", fileName, dir, step=" ")
-    system(cmd)
+    base::system(cmd)
   },
   error = function(cond){
     return (NULL)
