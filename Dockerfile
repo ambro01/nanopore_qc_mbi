@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     procps \
     git \
     wget \
-    libgsl0-dev
+    libgsl0-dev \
 
 # Download and install shiny server
 RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
@@ -40,7 +40,7 @@ RUN R -e "install.packages(c('shiny', 'shinyjs', 'shinydashboard', 'dplyr', 'ggp
 RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('IONiseR', 'rhdf5', 'minionSummaryData'))"
 
 RUN rm -rf /srv/shiny-server/*
-RUN git clone https://github.com/ambro01/NanoporeQC /srv/shiny-server/
+RUN git clone https://github.com/ambro01/NanoporeQC /srv/shiny-server
 #ADD nanopore_qc/* /srv/shiny-server/
 COPY shiny-server.conf /etc/shiny-srver/shiny-server.conf
 COPY shiny-server.sh /usr/bin/shiny-server.sh
@@ -49,6 +49,9 @@ COPY poRe_0.24.tar.gz /usr/bin/poRe_0.24.tar.gz
 RUN R -e "install.packages('/usr/bin/poRe_0.24.tar.gz', repos = NULL, type='source')"
 
 #CMD R INSTALL /usr/bin/poRe_0.24.tar.gz
+
+RUN apt-get update && apt-get install -y docker.io
+RUN docker pull stephenturner/poretools
 
 EXPOSE 3838
 CMD ["/usr/bin/shiny-server.sh"]

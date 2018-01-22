@@ -1,0 +1,8 @@
+To build docker container:
+docker build -t <tag> .s
+
+List of containers:
+docker ps
+
+To enter to docker container:
+docker exec -i -t <tag> /bin/bashdocker exec -i -t <tag> /bin/bash

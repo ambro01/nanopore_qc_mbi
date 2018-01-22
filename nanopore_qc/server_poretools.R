@@ -4,8 +4,8 @@ source('global.R')
 
 # funckje stosowane wylacznie w logice dotyczacej narzedzia poretools
 generatePoretoolsPlotByFunctionName <- function(x, dir){
-  tool <- "poretools"
-  fileName <- "images/foo.png"
+  tool <- "sudo docker run stephenturner/poretools"
+  fileName <- "./images/foo.png"
   func <- ""
   
   if(x == poretoolsHistogram) {
@@ -24,7 +24,7 @@ generatePoretoolsPlotByFunctionName <- function(x, dir){
   
   out <- tryCatch({
     cmd <- paste(tool, func, "--saveas", fileName, dir, step=" ")
-    return (system(cmd))
+    system(cmd)
   },
   error = function(cond){
     return (NULL)
