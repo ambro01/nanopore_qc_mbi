@@ -38,19 +38,17 @@ RUN export PATH=$PATH:/home/arq5x/.local/bin
 
 RUN R -e "install.packages(c('shiny', 'shinyjs', 'shinydashboard', 'dplyr', 'ggplot2', 'gridExtra', 'svDialogs', 'data.table', 'bit64', 'Rmisc'), repos='http://cran.rstudio.com/')"
 RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('IONiseR', 'rhdf5', 'minionSummaryData'))"
+RUN sudo R -e "install.packages(c('png', 'imager'), repos='http://cran.rstudio.com/')"
+ADD https://sourceforge.net/projects/rpore/files/0.24/poRe_0.24.tar.gz/download /tmp/poRe_0.24.tar.gz
+RUN R -e "install.packages('/tmp/poRe_0.24.tar.gz', repos = NULL, type='source')"
+#CMD R INSTALL /tmp/poRe_0.24.tar.gz
 
 RUN rm -rf /srv/shiny-server/*
-RUN echo "Repo was removed"
 RUN git clone https://github.com/ambro01/NanoporeQC /srv/shiny-server
 #ADD nanopore_qc/* /srv/shiny-server/
 COPY shiny-server.conf /etc/shiny-srver/shiny-server.conf
 COPY shiny-server.sh /usr/bin/shiny-server.sh
-COPY poRe_0.24.tar.gz /usr/bin/poRe_0.24.tar.gz
 
-RUN R -e "install.packages('/usr/bin/poRe_0.24.tar.gz', repos = NULL, type='source')"
-
-#CMD R INSTALL /usr/bin/poRe_0.24.tar.gz
-RUN sudo R -e "install.packages(c('png', 'imager'), repos='http://cran.rstudio.com/')"
 EXPOSE 3838
 CMD ["/usr/bin/shiny-server.sh"]
 
