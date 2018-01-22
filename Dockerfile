@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     procps \
     git \
     wget \
-    libgsl0-dev \
+    libgsl0-dev
 
 # Download and install shiny server
 RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
@@ -50,8 +50,21 @@ RUN R -e "install.packages('/usr/bin/poRe_0.24.tar.gz', repos = NULL, type='sour
 
 #CMD R INSTALL /usr/bin/poRe_0.24.tar.gz
 
-RUN apt-get update && apt-get install -y docker.io
-RUN docker pull stephenturner/poretools
+
+RUN apt-get update && apt-get install -y python-tables python-setuptools python-pip python-dev cython libhdf5-serial-dev python-rpy2
+
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+    wget --quiet https://repo.continuum.io/archive/Anaconda2-5.0.1-Linux-x86_64.sh -O ~/anaconda.sh && \
+    /bin/bash ~/anaconda.sh -b -p /opt/conda && \
+    rm ~/anaconda.sh
+
+ENV PATH /opt/conda/bin:$PATH
+RUN pip install readline
+RUN pip install six==1.11.0
+RUN R -e "install.packages(c('codetools', 'MASS'), repos='http://cran.rstudio.com/')"
+RUN git clone https://github.com/arq5x/poretools /tmp/poretools
+RUN cd /tmp/poretools && python setup.py install
+RUN export PATH=$PATH:/home/arq5x/.local/bin
 
 EXPOSE 3838
 CMD ["/usr/bin/shiny-server.sh"]

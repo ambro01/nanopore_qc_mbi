@@ -4,7 +4,7 @@ source('global.R')
 
 # funckje stosowane wylacznie w logice dotyczacej narzedzia poretools
 generatePoretoolsPlotByFunctionName <- function(x, dir){
-  tool <- "sudo docker run stephenturner/poretools"
+  tool <- "poretools"
   fileName <- "./images/foo.png"
   func <- ""
   
