@@ -35,6 +35,7 @@ RUN R -e "install.packages(c('codetools', 'MASS'), repos='http://cran.rstudio.co
 RUN git clone https://github.com/arq5x/poretools /tmp/poretools
 RUN cd /tmp/poretools && python setup.py install
 RUN export PATH=$PATH:/home/arq5x/.local/bin
+RUN pip install --upgrade pillow
 
 RUN R -e "install.packages(c('shiny', 'shinyjs', 'shinydashboard', 'dplyr', 'ggplot2', 'gridExtra', 'svDialogs', 'data.table', 'bit64', 'Rmisc'), repos='http://cran.rstudio.com/')"
 RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(c('IONiseR', 'rhdf5', 'minionSummaryData'))"

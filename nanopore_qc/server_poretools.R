@@ -5,7 +5,7 @@ source('global.R')
 # funckje stosowane wylacznie w logice dotyczacej narzedzia poretools
 generatePoretoolsPlotByFunctionName <- function(x, dir){
   tool <- "poretools"
-  fileName <- "images/foo.png"
+  fileName <- "images/foo.jpg"
   func <- ""
   
   if(x == poretoolsHistogram) {
