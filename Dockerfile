@@ -32,9 +32,9 @@ ENV PATH /opt/conda/bin:$PATH
 RUN pip install readline
 RUN pip install six==1.11.0
 RUN R -e "install.packages(c('codetools', 'MASS'), repos='http://cran.rstudio.com/')"
-RUN git clone https://github.com/arq5x/poretools /tmp/poretools
+RUN git clone https://github.com/ambro01/poretools /tmp/poretools
 RUN cd /tmp/poretools && python setup.py install
-RUN export PATH=$PATH:/home/arq5x/.local/bin
+RUN export PATH=$PATH:/home/poretools/.local/bin
 RUN pip install --upgrade pillow
 
 RUN R -e "install.packages(c('shiny', 'shinyjs', 'shinydashboard', 'dplyr', 'ggplot2', 'gridExtra', 'svDialogs', 'data.table', 'bit64', 'Rmisc'), repos='http://cran.rstudio.com/')"
